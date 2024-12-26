@@ -6,11 +6,10 @@ import Loader from "./components/Loader/Loader";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
 import ImageModal from "./components/ImageModal/ImageModal";
-import { Image } from "./components/ImageGallery/ImageGallery";
 import "./App.css";
 
 
-interface Image {
+interface UnsplashImage {
   id: string;
   urls: {
     small: string;
@@ -31,7 +30,7 @@ interface ErrorResponse {
 
 interface AppState {
   query: string;
-  images: Image[];
+  images: UnsplashImage[];
   page: number;
   isLoading: boolean;
   error: string | null;
@@ -85,7 +84,7 @@ const App: React.FC = () => {
         params: { query: state.query, page: state.page, per_page: 12 },
         headers: { Authorization: `Client-ID ${ACCESS_KEY}` },
       });
-      const fetchedImages: Image[] = response.data.results;
+      const fetchedImages: UnsplashImage[] = response.data.results;
 
       if (fetchedImages.length === 0 && state.page === 1) {
         setState((prevState) => ({
