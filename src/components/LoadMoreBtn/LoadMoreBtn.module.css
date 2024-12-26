@@ -1,0 +1,26 @@
+.btnLoadMoreContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 0 20px 0;
+}
+
+
+.btnLoadMore {
+    border-radius: 40px;
+    height: 40px;
+    border-radius: 100px;
+    background-color: #49097e;
+    color: #ffffff;
+    width: 100px;
+    padding: 10px 10px;
+    margin: 10px 10px;
+    font-size: 14px;
+}
+
+.btnLoadMore:hover,
+.btnLoadMore:active {
+    background-color: #6c0eb9;
+    border: none;
+    transform: scale(1.05);
+}

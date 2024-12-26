@@ -1,0 +1,6 @@
+.items {
+    border-radius: 40px;   
+    height: 200px;
+    width: 200px;
+    object-fit: cover;
+}
