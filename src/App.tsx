@@ -1,4 +1,3 @@
-import React from "react";
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import SearchBar from "./components/SearchBar/SearchBar";
@@ -7,111 +6,146 @@ import Loader from "./components/Loader/Loader";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
 import ImageModal from "./components/ImageModal/ImageModal";
+import { Image } from "./components/ImageGallery/ImageGallery";
+import "./App.css";
 
 
-type Image = {
+interface Image {
   id: string;
   urls: {
     small: string;
     regular: string;
   };
-  alt_description: string | null;
-};
+  alt_description?: string;
+}
 
 
-type ErrorResponse = {
+interface ErrorResponse {
   response?: {
     data?: {
       message?: string;
     };
   };
-};
+}
+
+
+interface AppState {
+  query: string;
+  images: Image[];
+  page: number;
+  isLoading: boolean;
+  error: string | null;
+  isModalOpen: boolean;
+  selectedImage: string | null;
+}
 
 
 const App: React.FC = () => {
-  
-  const [query, setQuery] = useState<string>("");
-  const [images, setImages] = useState<Image[]>([]);
-  const [page, setPage] = useState<number>(1);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [state, setState] = useState<AppState>({
+    query: "",
+    images: [],
+    page: 1,
+    isLoading: false,
+    error: null,
+    isModalOpen: false,
+    selectedImage: null,
+  });
 
-  
-  const ACCESS_KEY: string = "uGQS65bV6EsW8e6gyzJWK7vqsDZyXR0M7NNtqV2Mzuk";
 
-  
+  const ACCESS_KEY = "uGQS65bV6EsW8e6gyzJWK7vqsDZyXR0M7NNtqV2Mzuk";
+
+
   const resetState = useCallback(() => {
-    setPage(1);
-    setImages([]);
-    setError(null);
+    setState((prevState) => ({
+      ...prevState,
+      page: 1,
+      images: [],
+      error: null,
+    }));
   }, []);
 
-  
-  const handleSearchSubmit = (searchQuery: string): void => {
+
+  const handleSearchSubmit = (searchQuery: string) => {
     if (!searchQuery.trim()) {
-      setError("Please enter a valid search query.");
+      setState((prevState) => ({ ...prevState, error: "Please enter a valid search query." }));
       return;
     }
-    setQuery(searchQuery);
+    setState((prevState) => ({ ...prevState, query: searchQuery }));
     resetState();
   };
 
-  
-  const fetchImages = useCallback(async (): Promise<void> => {
-    if (!query) return;
 
-    setIsLoading(true);
+  const fetchImages = useCallback(async () => {
+    if (!state.query) return;
+
+    setState((prevState) => ({ ...prevState, isLoading: true }));
+
     try {
       const response = await axios.get("https://api.unsplash.com/search/photos", {
-        params: { query, page, per_page: 12 },
+        params: { query: state.query, page: state.page, per_page: 12 },
         headers: { Authorization: `Client-ID ${ACCESS_KEY}` },
       });
       const fetchedImages: Image[] = response.data.results;
 
-      if (fetchedImages.length === 0 && page === 1) {
-        setError("No images found. Try a different query.");
+      if (fetchedImages.length === 0 && state.page === 1) {
+        setState((prevState) => ({
+          ...prevState,
+          error: "No images found. Try a different query.",
+        }));
       } else {
-        setImages((prev) => (page === 1 ? fetchedImages : [...prev, ...fetchedImages]));
+        setState((prevState) => ({
+          ...prevState,
+          images: state.page === 1 ? fetchedImages : [...prevState.images, ...fetchedImages],
+        }));
       }
     } catch (err) {
       const error = err as ErrorResponse;
-      setError(error?.response?.data?.message || "Error loading images");
+      setState((prevState) => ({
+        ...prevState,
+        error: error?.response?.data?.message || "Error loading images",
+      }));
     } finally {
-      setIsLoading(false);
+      setState((prevState) => ({ ...prevState, isLoading: false }));
     }
-  }, [query, page, ACCESS_KEY]);
+  }, [state.query, state.page, ACCESS_KEY]);
 
-  
+
   useEffect(() => {
     fetchImages();
   }, [fetchImages]);
 
-  
-  const openModal = (imageUrl: string): void => {
-    if (!isModalOpen) {
-      setSelectedImage(imageUrl);
-      setIsModalOpen(true);
+
+  const openModal = (imageUrl: string) => {
+    if (!state.isModalOpen) {
+      setState((prevState) => ({
+        ...prevState,
+        selectedImage: imageUrl,
+        isModalOpen: true,
+      }));
     }
   };
 
-  const closeModal = (): void => {
-    setSelectedImage(null);
-    setIsModalOpen(false);
+
+  const closeModal = () => {
+    setState((prevState) => ({
+      ...prevState,
+      selectedImage: null,
+      isModalOpen: false,
+    }));
   };
+
 
   return (
     <div>
       <SearchBar onSubmit={handleSearchSubmit} />
-      {error && <ErrorMessage message={error} />}
-      {images.length > 0 && <ImageGallery images={images} onClick={openModal} />}
-      {isLoading && <Loader />}
-      {images.length > 0 && !isLoading && !error && (
-        <LoadMoreBtn onClick={() => setPage((prev) => prev + 1)} isLoading={isLoading} />
+      {state.error && <ErrorMessage message={state.error} />}
+      {state.images.length > 0 && <ImageGallery images={state.images} onClick={openModal} />}
+      {state.isLoading && <Loader />}
+      {state.images.length > 0 && !state.isLoading && !state.error && (
+        <LoadMoreBtn onClick={() => setState((prevState) => ({ ...prevState, page: prevState.page + 1 }))} isLoading={state.isLoading} />
       )}
-      {isModalOpen && selectedImage && (
-        <ImageModal isOpen={isModalOpen} onClose={closeModal} image={selectedImage} />
+      {state.isModalOpen && state.selectedImage && (
+        <ImageModal isOpen={state.isModalOpen} onClose={closeModal} image={state.selectedImage} />
       )}
     </div>
   );

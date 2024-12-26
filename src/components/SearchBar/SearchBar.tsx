@@ -1,6 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import styles from "./SearchBar.module.css";
+import style from "./SearchBar.module.css";
 
 
 interface SearchBarProps {
@@ -28,10 +28,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSubmit }) => {
   };
 
   return (
-    <header className={styles.header}>
+    <header className={style.header}>
       <form onSubmit={handleFormSubmit}>
         <input
-          className={styles.input}
+          className={style.input}
           type="text"
           autoComplete="off"
           autoFocus
@@ -39,7 +39,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSubmit }) => {
           value={query}
           onChange={handleInputChange}
         />
-        <button className={styles.btnSearch} type="submit">Search</button>
+        <button className={style.btnSearch} type="submit">Search</button>
       </form>
       <Toaster position="top-right" />
     </header>

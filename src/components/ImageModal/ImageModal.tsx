@@ -2,25 +2,25 @@ import Modal from "react-modal";
 import styles from "./ImageModal.module.css";
 
 
-Modal.setAppElement("#root");
-
-
 interface Image {
   urls: {
     regular: string;
   };
-  alt_description: string | null;
+  alt_description?: string;
 }
 
 
 interface ImageModalProps {
   isOpen: boolean;
+  image: Image;
   onClose: () => void;
-  image: string;
 }
 
 
-const ImageModal: React.FC<ImageModalProps> = ({ isOpen, onClose, image }) => {
+Modal.setAppElement("#root");
+
+
+const ImageModal: React.FC<ImageModalProps> = ({ isOpen, image, onClose }) => {
   return (
     <Modal
       isOpen={isOpen}
@@ -29,18 +29,14 @@ const ImageModal: React.FC<ImageModalProps> = ({ isOpen, onClose, image }) => {
       className={styles.modalContent}
       overlayClassName={styles.overlay}
     >
-      {image && (
-        <>
-          <img
-            src={image.urls.regular}
-            alt={image.alt_description || "Image"}
-            className={styles.image}
-          />
-          <button onClick={onClose} className={styles.closeButton}>
-            Close
-          </button>
-        </>
-      )}
+      <img
+        src={image.urls.regular}
+        alt={image.alt_description || "Image"}
+        className={styles.image}
+      />
+      <button onClick={onClose} className={styles.closeButton}>
+        Close
+      </button>
     </Modal>
   );
 };

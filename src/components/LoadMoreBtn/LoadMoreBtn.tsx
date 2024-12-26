@@ -1,4 +1,4 @@
-import styles from "./LoadMoreBtn.module.css";
+import style from "./LoadMoreBtn.module.css";
 
 
 interface LoadMoreBtnProps {
@@ -9,8 +9,8 @@ interface LoadMoreBtnProps {
 
 const LoadMoreBtn: React.FC<LoadMoreBtnProps> = ({ onClick, isLoading }) => {
   return (
-    <div className={styles.btnLoadMoreContainer}>
-      <button className={styles.btnLoadMore} onClick={onClick} disabled={isLoading}>
+    <div className={style.btnLoadMoreContainer}>
+      <button className={style.btnLoadMore} onClick={onClick} disabled={isLoading}>
         {isLoading ? <span></span> : "Load more"}
       </button>
     </div>

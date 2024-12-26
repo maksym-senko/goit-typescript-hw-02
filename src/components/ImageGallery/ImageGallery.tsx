@@ -2,15 +2,21 @@ import ImageCard from "../ImageCard/ImageCard";
 import styles from "./ImageGallery.module.css";
 
 
-interface Image {
+export interface Image {
   id: string | number;
-  [key: string]: any;
+  urls: {
+    small: string;
+    regular: string;
+  };
+  alt_description?: string;
 }
+
 
 interface ImageGalleryProps {
   images: Image[];
-  onClick: (imageUrl: string) => void;
+  onClick: (image: Image) => void;
 }
+
 
 const ImageGallery: React.FC<ImageGalleryProps> = ({ images, onClick }) => {
   return (
