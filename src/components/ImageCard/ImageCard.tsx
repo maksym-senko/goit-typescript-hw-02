@@ -1,17 +1,10 @@
 import styles from "./ImageCard.module.css";
 
 
-interface Image {
-  urls: {
-    small: string;
-  };
-  alt_description?: string;
-}
-
-
 interface ImageCardProps {
   image: Image;
   onClick: (image: Image) => void;
+  className?: string;
 }
 
 

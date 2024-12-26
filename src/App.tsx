@@ -9,7 +9,7 @@ import ImageModal from "./components/ImageModal/ImageModal";
 import "./App.css";
 
 
-interface UnsplashImage {
+interface Image {
   id: string;
   urls: {
     small: string;
@@ -30,7 +30,7 @@ interface ErrorResponse {
 
 interface AppState {
   query: string;
-  images: UnsplashImage[];
+  images: Image[];
   page: number;
   isLoading: boolean;
   error: string | null;
@@ -84,7 +84,7 @@ const App: React.FC = () => {
         params: { query: state.query, page: state.page, per_page: 12 },
         headers: { Authorization: `Client-ID ${ACCESS_KEY}` },
       });
-      const fetchedImages: UnsplashImage[] = response.data.results;
+      const fetchedImages: Image[] = response.data.results;
 
       if (fetchedImages.length === 0 && state.page === 1) {
         setState((prevState) => ({
@@ -114,11 +114,11 @@ const App: React.FC = () => {
   }, [fetchImages]);
 
 
-  const openModal = (imageUrl: string) => {
+  const openModal = (image: Image) => {
     if (!state.isModalOpen) {
       setState((prevState) => ({
         ...prevState,
-        selectedImage: imageUrl,
+        selectedImage: image,
         isModalOpen: true,
       }));
     }
