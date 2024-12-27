@@ -2,8 +2,8 @@ import styles from "./ImageCard.module.css";
 
 
 interface ImageCardProps {
-  image: Image;
-  onClick: (image: Image) => void;
+  image: UnsplashImage;
+  onClick: (image: UnsplashImage) => void;
   className?: string;
 }
 

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
+import { AxiosResponse } from "axios";
 import SearchBar from "./components/SearchBar/SearchBar";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
 import Loader from "./components/Loader/Loader";
