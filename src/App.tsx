@@ -83,9 +83,10 @@ const App: React.FC = () => {
       const response: AxiosResponse<{ results: Image[] }> = await axios.get(
         "https://api.unsplash.com/search/photos",
         {
-        params: { query: state.query, page: state.page, per_page: 12 },
-        headers: { Authorization: `Client-ID ${ACCESS_KEY}` },
-      });
+          params: { query: state.query, page: state.page, per_page: 12 },
+          headers: { Authorization: `Client-ID ${ACCESS_KEY}` },
+        }
+      );
       const fetchedImages: Image[] = response.data.results;
 
       if (fetchedImages.length === 0 && state.page === 1) {
