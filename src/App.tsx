@@ -6,17 +6,9 @@ import Loader from "./components/Loader/Loader";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
 import ImageModal from "./components/ImageModal/ImageModal";
+import { UnsplashImage } from "./types";
 import "./App.css";
 
-
-interface UnsplashImage  {
-  id: string;
-  urls: {
-    small: string;
-    regular: string;
-  };
-  alt_description?: string;
-}
 
 
 interface ErrorResponse {
@@ -42,7 +34,7 @@ interface AppState {
 const App: React.FC = () => {
   const [state, setState] = useState<AppState>({
     query: "",
-    images: [] as UnsplashImage [],
+    images: [] as UnsplashImage[],
     page: 1,
     isLoading: false,
     error: null,
