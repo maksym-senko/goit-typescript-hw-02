@@ -1,16 +1,17 @@
 import styles from "./ImageCard.module.css";
+import { Image } from "../../types";
 
 
 interface ImageCardProps {
-  image: UnsplashImage;
-  onClick: (image: UnsplashImage) => void;
+  image: Image;
+  onClick: (image: Image) => void;
   className?: string;
 }
 
 
-const ImageCard: React.FC<ImageCardProps> = ({ image, onClick }) => {
+const ImageCard: React.FC<ImageCardProps> = ({ image, onClick, className }) => {
   return (
-    <div onClick={() => onClick(image)}>
+    <div className={className} onClick={() => onClick(image)}>
       <img className={styles.items} src={image.urls.small} alt={image.alt_description || "Image"} />
     </div>
   );
