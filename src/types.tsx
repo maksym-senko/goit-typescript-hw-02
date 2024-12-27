@@ -1,4 +1,4 @@
-export interface Image {
+export interface UnsplashImage  {
     id: string;
     urls: {
       small: string;

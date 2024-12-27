@@ -1,11 +1,11 @@
 import ImageCard from "../ImageCard/ImageCard";
 import styles from "./ImageGallery.module.css";
-import { Image } from '../../types'
+import { UnsplashImage  } from '../../types'
 
 
 interface ImageGalleryProps {
-  images: Image[];
-  onClick: (image: Image) => void;
+  images: UnsplashImage [];
+  onClick: (image: UnsplashImage ) => void;
 }
 
 

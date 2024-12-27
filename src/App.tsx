@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { AxiosResponse } from "axios";
 import SearchBar from "./components/SearchBar/SearchBar";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
 import Loader from "./components/Loader/Loader";
@@ -10,7 +9,7 @@ import ImageModal from "./components/ImageModal/ImageModal";
 import "./App.css";
 
 
-interface Image {
+interface UnsplashImage  {
   id: string;
   urls: {
     small: string;
@@ -31,19 +30,19 @@ interface ErrorResponse {
 
 interface AppState {
   query: string;
-  images: Image[];
+  images: UnsplashImage [];
   page: number;
   isLoading: boolean;
   error: string | null;
   isModalOpen: boolean;
-  selectedImage: Image | null;
+  selectedImage: UnsplashImage  | null;
 }
 
 
 const App: React.FC = () => {
   const [state, setState] = useState<AppState>({
     query: "",
-    images: [] as Image[],
+    images: [] as UnsplashImage [],
     page: 1,
     isLoading: false,
     error: null,
@@ -81,13 +80,14 @@ const App: React.FC = () => {
     setState((prevState) => ({ ...prevState, isLoading: true }));
 
     try {
-      const response = await axios.get("https://api.unsplash.com/search/photos", {
+      const response = await axios.get<{
+        results: UnsplashImage[];
+      }>("https://api.unsplash.com/search/photos", {
         params: { query: state.query, page: state.page, per_page: 12 },
         headers: { Authorization: `Client-ID ${ACCESS_KEY}` },
-      }) as AxiosResponse<{ results: Image[] }>;
-      
+      });
 
-      const fetchedImages: Image[] = response.data.results;
+      const fetchedImages: UnsplashImage[] = response.data.results;
 
 
       if (fetchedImages.length === 0 && state.page === 1) {
@@ -118,7 +118,7 @@ const App: React.FC = () => {
   }, [fetchImages]);
 
 
-  const openModal = (image: Image) => {
+  const openModal = (image: UnsplashImage ) => {
     if (!state.isModalOpen) {
       setState((prevState) => ({
         ...prevState,
