@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
+import { AxiosResponse } from "axios";
 import SearchBar from "./components/SearchBar/SearchBar";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
 import Loader from "./components/Loader/Loader";
@@ -9,7 +10,7 @@ import ImageModal from "./components/ImageModal/ImageModal";
 import "./App.css";
 
 
-interface Image {
+interface UnsplashImage {
   id: string;
   urls: {
     small: string;
@@ -30,12 +31,12 @@ interface ErrorResponse {
 
 interface AppState {
   query: string;
-  images: Image[];
+  images: UnsplashImage[];
   page: number;
   isLoading: boolean;
   error: string | null;
   isModalOpen: boolean;
-  selectedImage: Image | null;
+  selectedImage: UnsplashImage | null;
 }
 
 
@@ -87,7 +88,8 @@ const App: React.FC = () => {
           headers: { Authorization: `Client-ID ${ACCESS_KEY}` },
         }
       );
-      const fetchedImages: Image[] = response.data.results;
+      const fetchedImages: UnsplashImage[] = response.data.results;
+
 
       if (fetchedImages.length === 0 && state.page === 1) {
         setState((prevState) => ({
@@ -117,7 +119,7 @@ const App: React.FC = () => {
   }, [fetchImages]);
 
 
-  const openModal = (image: Image) => {
+  const openModal = (image: UnsplashImage) => {
     if (!state.isModalOpen) {
       setState((prevState) => ({
         ...prevState,
