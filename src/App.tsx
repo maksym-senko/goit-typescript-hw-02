@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { AxiosResponse } from "axios";
 import SearchBar from "./components/SearchBar/SearchBar";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
 import Loader from "./components/Loader/Loader";
@@ -81,13 +80,12 @@ const App: React.FC = () => {
     setState((prevState) => ({ ...prevState, isLoading: true }));
 
     try {
-      const response: AxiosResponse<{ results: Image[] }> = await axios.get(
-        "https://api.unsplash.com/search/photos",
-        {
-          params: { query: state.query, page: state.page, per_page: 12 },
-          headers: { Authorization: `Client-ID ${ACCESS_KEY}` },
-        }
-      );
+      const response = await axios.get("https://api.unsplash.com/search/photos", {
+        params: { query: state.query, page: state.page, per_page: 12 },
+        headers: { Authorization: `Client-ID ${ACCESS_KEY}` },
+      }) as AxiosResponse<{ results: UnsplashImage[] }>;
+      
+      
       const fetchedImages: UnsplashImage[] = response.data.results;
 
 
