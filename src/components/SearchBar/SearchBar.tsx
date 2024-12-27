@@ -8,7 +8,6 @@ interface SearchBarProps {
   onSubmit: (searchQuery: string) => void;
 }
 
-
 const SearchBar: React.FC<SearchBarProps> = ({ onSubmit }) => {
   const [query, setQuery] = useState<string>("");
 

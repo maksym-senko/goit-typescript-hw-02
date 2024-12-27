@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import SearchBar from "./components/SearchBar/SearchBar";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
 import Loader from "./components/Loader/Loader";
@@ -85,7 +85,7 @@ const App: React.FC = () => {
         headers: { Authorization: `Client-ID ${ACCESS_KEY}` },
       }) as AxiosResponse<{ results: UnsplashImage[] }>;
       
-      
+
       const fetchedImages: UnsplashImage[] = response.data.results;
 
 
