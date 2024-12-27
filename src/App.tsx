@@ -42,7 +42,7 @@ interface AppState {
 const App: React.FC = () => {
   const [state, setState] = useState<AppState>({
     query: "",
-    images: [],
+    images: [] as UnsplashImage[],
     page: 1,
     isLoading: false,
     error: null,
